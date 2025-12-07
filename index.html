@@ -3,9 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>relay-novel</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>relay-novel</h1>
+            <p class="subtitle">みんなで紡ぐ、終わらない物語</p>
+        </header>
+
+        <div class="novel-container">
+            <div id="novel-lines" class="novel-lines">
+                <div class="loading">読み込み中...</div>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <textarea 
+                id="line-input" 
+                placeholder="次の1行を書いてください（最大100文字）" 
+                maxlength="100"
+            ></textarea>
+            <div class="input-footer">
+                <span id="char-count">0/100</span>
+                <button id="submit-btn">投稿する</button>
+            </div>
+            <p class="notice" id="notice"></p>
+        </div>
+    </div>
+
+    <!--Firebase SDK-->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     
+    <script>
+        const firebaseConfig = {
+    apiKey: "AIzaSyBBuqZ-MKpS9Yg2J2635mnyix6O_XU7v1g",
+    authDomain: "relay-novel-110b6.firebaseapp.com",
+    databaseURL: "https://relay-novel-110b6-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "relay-novel-110b6",
+    storageBucket: "relay-novel-110b6.firebasestorage.app",
+    messagingSenderId: "429194672512",
+    appId: "1:429194672512:web:545485173674279fca2965"
+  };
+        
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    
+    <script src="script.js"></script>
 </body>
 </html>
