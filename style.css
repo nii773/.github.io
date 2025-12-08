@@ -1,162 +1,334 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body {
-    font-family: 'Hiragino Kaku Gothic ProN', 'メイリオ', sans-serif;
-    background: powderblue;
-    min-height: 100vh;
-    padding: 20px;
-}
+        body {
+            font-family: 'Hiragino Kaku Gothic ProN', 'メイリオ', sans-serif;
+            background: powderblue;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-}
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 20px;
+        }
 
-header {
-    text-align: center;
-    color: white;
-    margin-bottom: 30px;
-}
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            grid-column: 1 / -1;
+        }
 
-header h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-}
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
 
-.subtitle {
-    font-size: 1.1em;
-    opacity: 0.9;
-}
+        /* 左サイドバー */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+        }
 
-.novel-container {
-    background: white;
-    border-radius: 15px;
-    padding: 30px;
-    margin-bottom: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    max-height: 500px;
-    overflow-y: auto;
-}
+        .novels-list {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
 
-.novel-lines {
-    line-height: 2;
-    font-size: 1.1em;
-}
+        .novels-list h2 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
 
-.line {
-    padding: 10px 0;
-    border-bottom: 1px dashed #e0e0e0;
-    animation: fadeIn 0.5s;
-}
+        .novel-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
 
-.line:last-child {
-    border-bottom: none;
-    font-weight: bold;
-    color: #667eea;
-}
+        .novel-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
 
-.loading {
-    text-align: center;
-    color: #999;
-    padding: 20px;
-}
+        .novel-item.active {
+            background: #e7e9ff;
+            border-left-color: #667eea;
+            font-weight: bold;
+        }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        .novel-title {
+            font-size: 1em;
+            margin-bottom: 4px;
+        }
 
-.input-section {
-    background: white;
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
+        .novel-meta {
+            font-size: 0.8em;
+            color: #999;
+        }
 
-#line-input {
-    width: 100%;
-    min-height: 100px;
-    padding: 15px;
-    font-size: 1em;
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    resize: vertical;
-    font-family: inherit;
-    transition: border-color 0.3s;
-}
+        .create-novel-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
 
-#line-input:focus {
-    outline: none;
-    border-color: #667eea;
-}
+        .create-novel-btn:hover {
+            transform: translateY(-2px);
+        }
 
-.input-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 15px;
-}
+        .create-novel-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
 
-#char-count {
-    color: #999;
-    font-size: 0.9em;
-}
+        /* メインコンテンツ */
+        .content {
+            flex: 1;
+            min-width: 0;
+        }
 
-#submit-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    font-size: 1em;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
+        .novel-header {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
 
-#submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-}
+        .novel-header h2 {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
 
-#submit-btn:active {
-    transform: translateY(0);
-}
+        .novel-info {
+            color: #666;
+            font-size: 0.9em;
+        }
 
-#submit-btn:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-    transform: none;
-}
+        .novel-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-height: 400px;
+            overflow-y: auto;
+        }
 
-.notice {
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-    font-size: 0.9em;
-}
+        .novel-lines {
+            line-height: 2;
+            font-size: 1.1em;
+        }
 
-.notice.success {
-    background: #d4edda;
-    color: #155724;
-}
+        .line {
+            padding: 10px 0;
+            border-bottom: 1px dashed #e0e0e0;
+            animation: fadeIn 0.5s;
+        }
 
-.notice.error {
-    background: #f8d7da;
-    color: #721c24;
-}
+        .line:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            color: #667eea;
+        }
 
-.notice.info {
-    background: #d1ecf1;
-    color: #0c5460;
-}
+        .loading {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .input-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        #line-input {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            font-size: 1em;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            resize: vertical;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        #line-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .input-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        #char-count {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        #submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        #submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        #submit-btn:active {
+            transform: translateY(0);
+        }
+
+        #submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .notice {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .notice.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .notice.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .notice.info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        /* モーダル */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .modal-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .btn-cancel {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-create {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+        }
