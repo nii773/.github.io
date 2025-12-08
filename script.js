@@ -123,7 +123,7 @@ function showNotice(message, type) {
 //初期化
 loadLines();
 
-/ 投稿制限の確認
+// 投稿制限の確認
 if (!canPost()) {
     const timeLeft = getTimeUntilNextPost();
     showNotice(`今日はもう投稿済みです。次は ${timeLeft} 後に投稿できます。`, 'info');
