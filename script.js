@@ -7,16 +7,16 @@ const charCount = document.getElementById('char-count');
 const novelLines = document.getElementById('novel-lines');
 const notice = document.getElementById('notice');
 
-// 最後に投稿した時刻を保存するキー
+//最後に投稿した時刻を保存
 const LAST_POST_KEY = 'lastPostTime';
 
-// 文字数カウント
+//文字数カウント
 lineInput.addEventListener('input', () => {
     const length = lineInput.value.length;
     charCount.textContent = `${length}/100`;
 });
 
-// 小説の行を読み込む
+//小説の行を読み込む
 function loadLines() {
     linesRef.orderByChild('timestamp').limitToLast(30).on('value', (snapshot) => {
         novelLines.innerHTML = '';
@@ -38,12 +38,12 @@ function loadLines() {
             novelLines.appendChild(lineDiv);
         });
         
-        // 最新行までスクロール
+        //最新行までスクロール
         novelLines.scrollTop = novelLines.scrollHeight;
     });
 }
 
-// 投稿制限チェック（1日1回）
+//投稿制限チェック（1日1回）
 function canPost() {
     const lastPostTime = localStorage.getItem(LAST_POST_KEY);
     if (!lastPostTime) return true;
@@ -51,11 +51,11 @@ function canPost() {
     const now = new Date();
     const lastPost = new Date(parseInt(lastPostTime));
     
-    // 日付が変わっていればOK
+    //日付が変わっていればOK
     return now.toDateString() !== lastPost.toDateString();
 }
 
-// 残り時間を表示
+//残り時間を表示
 function getTimeUntilNextPost() {
     const lastPostTime = localStorage.getItem(LAST_POST_KEY);
     if (!lastPostTime) return '';
@@ -73,7 +73,7 @@ function getTimeUntilNextPost() {
     return `${hours}時間${minutes}分`;
 }
 
-// 投稿処理
+//投稿処理
 submitBtn.addEventListener('click', () => {
     const text = lineInput.value.trim();
     
@@ -90,7 +90,7 @@ submitBtn.addEventListener('click', () => {
     
     submitBtn.disabled = true;
     
-    // Firebaseに保存
+    //Firebaseに保存
     linesRef.push({
         text: text,
         timestamp: Date.now()
@@ -109,7 +109,7 @@ submitBtn.addEventListener('click', () => {
     });
 });
 
-// 通知表示
+//通知表示
 function showNotice(message, type) {
     notice.textContent = message;
     notice.className = `notice ${type}`;
@@ -120,10 +120,10 @@ function showNotice(message, type) {
     }, 5000);
 }
 
-// 初期化
+//初期化
 loadLines();
 
-// 投稿制限の確認
+/ 投稿制限の確認
 if (!canPost()) {
     const timeLeft = getTimeUntilNextPost();
     showNotice(`今日はもう投稿済みです。次は ${timeLeft} 後に投稿できます。`, 'info');
