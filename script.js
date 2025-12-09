@@ -1,5 +1,4 @@
         const database = firebase.database();
-const auth = firebase.auth();
 
         const ADMIN_PASSWORD = "GHieob350Dgev";
         const ADMIN_SESSION_KEY = "adminLoggedIn";
