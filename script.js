@@ -42,8 +42,8 @@ function checkAdminStatus() {
 
     auth.onAuthStateChanged((user) => {
         if (user) {
-            
-                then((idTokenResult) => {
+            user.getIdTokenResult(true)
+                .then((idTokenResult) => {
                     if (idTokenResult.claims.admin === true) {
                         isAdmin = true;
                         adminBtn.textContent = 'ログアウト';
@@ -261,7 +261,7 @@ function checkAdminStatus() {
             
             if (isCompleted) {
                 currentNovelStatus.innerHTML = '<span class="novel-status-large completed">完成</span>';
-                completionMessageContainer.innerHTML = '<div class="completion-message">🎉 この作品は完成しました！ 🎉</div>';
+                completionMessageContainer.innerHTML = '<div class="completion-message">この作品は完成しました！</div>';
             } else {
                 currentNovelStatus.innerHTML = '<span class="novel-status-large in-progress">製作中</span>';
                 completionMessageContainer.innerHTML = '';
@@ -431,16 +431,28 @@ function checkAdminStatus() {
             alert('完成までの行数は10〜1000行の範囲で指定してください');
             return;
         }
+
+                if (!auth.currentUser) {
+        showCreateNotice('作品を作成するには認証が必要です。', 'error');
+        return;
+    }
         
         const novelId = database.ref('novels').push().key;
         const novelData = {
             title: title,
             targetLines: targetLines,
             currentLines: 0,
-            createdAt: Date.now()
+            createdAt: Date.now(),
+            userId: auth.currentUser.uid
         };
         
-        database.ref(`novels/${novelId}`).set(novelData)
+        database.ref(database.ref('novels').push({
+        title: title,
+        createdAt: firebase.database.ServerValue.TIMESTAMP,
+        targetLines: targetLines,
+        currentLines: 0,
+        userId: auth.currentUser.uid
+    }))
             .then(() => {
                 localStorage.setItem(LAST_CREATE_KEY, Date.now().toString());
                 createModal.classList.remove('show');
@@ -465,6 +477,11 @@ function checkAdminStatus() {
             showNotice('1行を入力してください', 'error');
             return;
         }
+
+        if (text.length > 100) {
+        showNotice('投稿は100文字以内です。', 'error');
+        return;
+    }
         
         if (!canPost()) {
             const timeLeft = getTimeUntilNextPost();
