@@ -399,11 +399,11 @@ function checkAdminStatus() {
     }
 
         createNovelBtn.addEventListener('click', () => {
-        if (!canCreateNovel()) {
-            const timeLeft = getTimeUntilNextCreate();
-            showCreateNotice(`次の作品は ${timeLeft} 後に作成できます`, 'info');
-            return;
-        }
+        // if (!canCreateNovel()) {
+        //     const timeLeft = getTimeUntilNextCreate();
+        //     showCreateNotice(`次の作品は ${timeLeft} 後に作成できます`, 'info');
+        //     return;
+        // }
         createModal.classList.add('show');
         novelTitleInput.value = '';
         targetLinesInput.value = '100';
