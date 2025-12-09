@@ -482,11 +482,11 @@ function checkAdminStatus() {
         return;
     }
         
-        if (!canPost()) {
-            const timeLeft = getTimeUntilNextPost();
-            showNotice(`次の投稿まで ${timeLeft} お待ちください`, 'info');
-            return;
-        }
+        // if (!canPost()) {
+        //     const timeLeft = getTimeUntilNextPost();
+        //     showNotice(`次の投稿まで ${timeLeft} お待ちください`, 'info');
+        //     return;
+        // }
         
         submitBtn.disabled = true;
     }
