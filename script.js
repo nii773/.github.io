@@ -528,4 +528,4 @@ const firebaseConfig = {
         const timeLeft = getTimeUntilNextCreate();
         createNovelBtn.disabled = true;
         showCreateNotice(`次の作品は ${timeLeft} 後に作成できます`, 'info');
-    }</parameter>
+    }
