@@ -291,7 +291,7 @@ function checkAdminStatus() {
                 novelLines.innerHTML = '';
                 
                 if (!snapshot.exists()) {
-                    novelLines.innerHTML = '<div class="loading">まだ物語は始まっていません。<br>あなたが最初の1行を書きませんか？</div>';
+                    novelLines.innerHTML = '<div class="loading">まだ何も書かれていません。<br>最初の1行目を書いてください</div>';
                     updateNovelInfo(0);
                     return;
                 }
