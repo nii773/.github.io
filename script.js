@@ -489,7 +489,6 @@ function checkAdminStatus() {
         // }
         
         submitBtn.disabled = true;
-    }
         
         database.ref(`lines/${currentNovelId}`).push({
             text: text,
