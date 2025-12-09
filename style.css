@@ -42,6 +42,8 @@
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             margin-bottom: 20px;
+            max-height: 500px;
+            overflow-y: auto;
         }
 
         .novels-list h2 {
@@ -73,9 +75,34 @@
             font-weight: bold;
         }
 
+        .novel-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
         .novel-title {
             font-size: 1em;
-            margin-bottom: 4px;
+            flex: 1;
+        }
+
+        .status-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        .status-badge.in-progress {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge.completed {
+            background: #d4edda;
+            color: #155724;
         }
 
         .novel-meta {
@@ -119,10 +146,33 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
+        .novel-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
         .novel-header h2 {
             font-size: 1.8em;
             color: #667eea;
-            margin-bottom: 10px;
+        }
+
+        .novel-status-large {
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .novel-status-large.in-progress {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .novel-status-large.completed {
+            background: #d4edda;
+            color: #155724;
         }
 
         .novel-info {
@@ -205,9 +255,21 @@
             margin-top: 15px;
         }
 
+        .input-footer-left {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
         #char-count {
             color: #999;
             font-size: 0.9em;
+        }
+
+        #remaining-lines {
+            color: #667eea;
+            font-size: 1em;
+            font-weight: bold;
         }
 
         #submit-btn {
@@ -290,13 +352,28 @@
             color: #667eea;
         }
 
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
         .modal-content input {
             width: 100%;
             padding: 12px;
             font-size: 1em;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
-            margin-bottom: 20px;
+        }
+
+        .modal-content input:focus {
+            outline: none;
+            border-color: #667eea;
         }
 
         .modal-buttons {
@@ -323,6 +400,18 @@
             color: white;
         }
 
+        .completion-message {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s;
+        }
+
         @media (max-width: 768px) {
             .main-container {
                 flex-direction: column;
@@ -330,5 +419,11 @@
 
             .sidebar {
                 width: 100%;
+            }
+
+            .novel-header-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
             }
         }
