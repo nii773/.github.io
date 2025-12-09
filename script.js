@@ -281,7 +281,7 @@ function checkAdminStatus() {
             }
             
             loadLines();
-            checkPostLimit();
+            // checkPostLimit();
         }
 
         function loadLines() {
@@ -333,14 +333,15 @@ function checkAdminStatus() {
     }
 
         function canCreateNovel() {
-        const lastCreateTime = localStorage.getItem(LAST_CREATE_KEY);
-        if (!lastCreateTime) return true;
+        // const lastCreateTime = localStorage.getItem(LAST_CREATE_KEY);
+        // if (!lastCreateTime) return true;
         
-        const now = new Date();
-        const lastCreate = new Date(parseInt(lastCreateTime));
-        const diffDays = Math.floor((now - lastCreate) / (1000 * 60 * 60 * 24));
+        // const now = new Date();
+        // const lastCreate = new Date(parseInt(lastCreateTime));
+        // const diffDays = Math.floor((now - lastCreate) / (1000 * 60 * 60 * 24));
         
-        return diffDays >= 7;
+        // return diffDays >= 7;
+                return true;
     }
 
         function getTimeUntilNextCreate() {
@@ -363,13 +364,14 @@ function checkAdminStatus() {
         }
     }
         function canPost() {
-        const lastPostTime = localStorage.getItem(LAST_POST_KEY);
-        if (!lastPostTime) return true;
+        // const lastPostTime = localStorage.getItem(LAST_POST_KEY);
+        // if (!lastPostTime) return true;
         
-        const now = new Date();
-        const lastPost = new Date(parseInt(lastPostTime));
+        // const now = new Date();
+        // const lastPost = new Date(parseInt(lastPostTime));
         
-        return now.toDateString() !== lastPost.toDateString();
+        // return now.toDateString() !== lastPost.toDateString();
+                return true;
     }
 
     function getTimeUntilNextPost() {
@@ -390,10 +392,10 @@ function checkAdminStatus() {
     }
 
         function checkPostLimit() {
-        if (!canPost()) {
-            const timeLeft = getTimeUntilNextPost();
-            showNotice(`今日はもう投稿済みです。次は ${timeLeft} 後に投稿できます。`, 'info');
-        }
+        // if (!canPost()) {
+        //     const timeLeft = getTimeUntilNextPost();
+        //     showNotice(`今日はもう投稿済みです。次は ${timeLeft} 後に投稿できます。`, 'info');
+        // }
     }
 
         createNovelBtn.addEventListener('click', () => {
@@ -451,7 +453,7 @@ function checkAdminStatus() {
 
     novelRef.set(novelData)
         .then(() => {
-            localStorage.setItem(LAST_CREATE_KEY, Date.now().toString());
+            // localStorage.setItem(LAST_CREATE_KEY, Date.now().toString());
             createModal.classList.remove('show');
             showCreateNotice('作品を作成しました！', 'success');
 
@@ -499,7 +501,7 @@ function checkAdminStatus() {
                 userId: auth.currentUser.uid
         })
         .then(() => {
-            localStorage.setItem(LAST_POST_KEY, Date.now().toString());
+            // localStorage.setItem(LAST_POST_KEY, Date.now().toString());
             lineInput.value = '';
             charCount.textContent = '0/100';
             showNotice('投稿しました！次は明日また投稿できます。', 'success');
@@ -538,8 +540,8 @@ auth.signInAnonymously().catch((error) => {
 });
         checkAdminStatus();
 
-    if (!canCreateNovel()) {
-        const timeLeft = getTimeUntilNextCreate();
-        createNovelBtn.disabled = true;
-        showCreateNotice(`次の作品は ${timeLeft} 後に作成できます`, 'info');
-    }
+    // if (!canCreateNovel()) {
+    //     const timeLeft = getTimeUntilNextCreate();
+    //     createNovelBtn.disabled = true;
+    //     showCreateNotice(`次の作品は ${timeLeft} 後に作成できます`, 'info');
+    // }
