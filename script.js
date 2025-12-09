@@ -43,7 +43,7 @@ function checkAdminStatus() {
     auth.onAuthStateChanged((user) => {
         if (user) {
             
-                .then((idTokenResult) => {
+                then((idTokenResult) => {
                     if (idTokenResult.claims.admin === true) {
                         isAdmin = true;
                         adminBtn.textContent = 'ログアウト';
@@ -481,7 +481,7 @@ function checkAdminStatus() {
         
         database.ref(`lines/${currentNovelId}`).push({
             text: text,
-            timestamp: Date.now()
+            timestamp: Date.now(),
                 userId: auth.currentUser.uid
         })
         .then(() => {
