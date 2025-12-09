@@ -1,4 +1,5 @@
         const database = firebase.database();
+const auth = firebase.auth();
 
         const ADMIN_PASSWORD = "GHieob350Dgev";
         const ADMIN_SESSION_KEY = "adminLoggedIn";
@@ -69,19 +70,43 @@
 
         // 管理者ログイン処理
         adminLoginBtn.addEventListener('click', () => {
-            const password = adminPasswordInput.value;
-            if (password === ADMIN_PASSWORD) {
-                isAdmin = true;
-                sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
-                adminBtn.textContent = 'ログアウト';
-                adminBtn.classList.add('logged-in');
-                adminModal.classList.remove('show');
-                loadNovelsList();
-                alert('管理者としてログインしました');
-            } else {
-                alert('パスワードが正しくありません');
-            }
+    // 実際に管理者として設定したメールアドレスと入力されたパスワードを使用
+    const adminEmail = 'あなたの管理者メールアドレス@example.com'; // **ここを実際の管理者のメールアドレスに置き換えてください**
+    const password = adminPasswordInput.value;
+
+    // 1. Firebase Authでログイン
+    auth.signInWithEmailAndPassword(adminEmail, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            
+            // 2. ログイン成功後、カスタムクレームを確認
+            // (true) を指定して、最新のIDトークン（クレームを含む）を取得
+            user.getIdTokenResult(true) 
+                .then((idTokenResult) => {
+                    if (idTokenResult.claims.admin === true) { // 管理者クレームをチェック
+                        // ログイン成功＆管理者として確認
+                        isAdmin = true;
+                        // SessionStorageはFirebase Authが状態を持つので基本的に不要ですが、isAdminフラグの管理のために残すことも可能です
+                        sessionStorage.setItem(ADMIN_SESSION_KEY, 'true'); 
+                        
+                        adminBtn.textContent = 'ログアウト';
+                        adminBtn.classList.add('logged-in');
+                        adminModal.classList.remove('show');
+                        loadNovelsList();
+                        alert('管理者としてログインしました');
+                    } else {
+                        // ログインは成功したが管理者権限がない場合、ログアウトさせる
+                        auth.signOut(); 
+                        alert('管理者権限がありません');
+                    }
+                })
+        })
+        .catch((error) => {
+            // ログイン失敗（メールアドレス/パスワード間違いなど）
+            console.error('ログインエラー:', error);
+            alert('ログインに失敗しました: ' + error.message);
         });
+});
 
         adminCancelBtn.addEventListener('click', () => {
             adminModal.classList.remove('show');
@@ -517,17 +542,3 @@
         createNovelBtn.disabled = true;
         showCreateNotice(`次の作品は ${timeLeft} 後に作成できます`, 'info');
     }
-user.getIdTokenResult(true) // (true) でトークンを強制的にリフレッシュ
-    .then((idTokenResult) => {
-        // idTokenResult.claims の中に設定した { admin: true } が含まれています
-        if (idTokenResult.claims.admin === true) {
-            // 管理者として処理を続行
-            console.log('このユーザーは管理者です。');
-        } else {
-            // 一般ユーザーとして処理
-            console.log('このユーザーは一般ユーザーです。');
-        }
-    })
-    .catch((error) => {
-        console.error('クレームの取得に失敗しました:', error);
-    });
