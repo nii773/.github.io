@@ -420,8 +420,8 @@ function checkAdminStatus() {
     });
 
         confirmCreateBtn.addEventListener('click', () => {
-        const title = novelTitleInput.value.trim();
-        const targetLines = parseInt(targetLinesInput.value) || 100;
+       const title = novelTitleInput.value.trim();
+            const targetLines = parseInt(targetLinesInput.value) || 100;
         
         if (!title) {
             alert('タイトルを入力してください');
@@ -438,28 +438,31 @@ function checkAdminStatus() {
         return;
     }
         const novelRef = database.ref('novels').push();
-        const novelId = database.ref('novels').push().key;
-                
-        const novelData = {
-            title: title,
-            targetLines: targetLines,
-            currentLines: 0,
-            createdAt: firebase.database.ServerValue.TIMESTAMP, 
-            userId: auth.currentUser.uid
-        };
-        
-        novelRef.set(novelData)
-            .then(() => {
-                localStorage.setItem(LAST_CREATE_KEY, Date.now().toString());
-                createModal.classList.remove('show');
-                showCreateNotice('作品を作成しました！', 'success');
-                selectNovel(novelId, novelData); 
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('作成に失敗しました');
-            });
-    }))
+    const novelId = novelRef.key; // 2. 取得した Reference からキーを取得する
+    
+    const novelData = {
+        title: title,
+        targetLines: targetLines,
+        currentLines: 0,
+        // 3. サーバータイムスタンプを正確に使用する
+        createdAt: firebase.database.ServerValue.TIMESTAMP, 
+        userId: auth.currentUser.uid
+    };
+    
+    // 4. Reference に対して set() を実行する
+    novelRef.set(novelData)
+        .then(() => {
+            localStorage.setItem(LAST_CREATE_KEY, Date.now().toString());
+            createModal.classList.remove('show');
+            showCreateNotice('作品を作成しました！', 'success');
+            // 5. 新しい novelId を使用して選択
+            selectNovel(novelId, novelData); 
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('作成に失敗しました');
+        });
+});
             .then(() => {
                 localStorage.setItem(LAST_CREATE_KEY, Date.now().toString());
                 createModal.classList.remove('show');
