@@ -102,7 +102,7 @@ function checkAdminStatus() {
         // 管理者ログイン処理
         adminLoginBtn.addEventListener('click', () => {
     // 実際に管理者として設定したメールアドレスと入力されたパスワードを使用
-    const adminEmail = 'あなたの管理者メールアドレス@example.com'; // **ここを実際の管理者のメールアドレスに置き換えてください**
+    const adminEmail = 'takmasumizu@gmail.com';
     const password = adminPasswordInput.value;
 
     // 1. Firebase Authでログイン
@@ -118,7 +118,6 @@ function checkAdminStatus() {
                         // ログイン成功＆管理者として確認
                         isAdmin = true;
                         // SessionStorageはFirebase Authが状態を持つので基本的に不要ですが、isAdminフラグの管理のために残すことも可能です
-                        sessionStorage.setItem(ADMIN_SESSION_KEY, 'true'); 
                         
                         adminBtn.textContent = 'ログアウト';
                         adminBtn.classList.add('logged-in');
