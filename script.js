@@ -517,3 +517,17 @@
         createNovelBtn.disabled = true;
         showCreateNotice(`次の作品は ${timeLeft} 後に作成できます`, 'info');
     }
+user.getIdTokenResult(true) // (true) でトークンを強制的にリフレッシュ
+    .then((idTokenResult) => {
+        // idTokenResult.claims の中に設定した { admin: true } が含まれています
+        if (idTokenResult.claims.admin === true) {
+            // 管理者として処理を続行
+            console.log('このユーザーは管理者です。');
+        } else {
+            // 一般ユーザーとして処理
+            console.log('このユーザーは一般ユーザーです。');
+        }
+    })
+    .catch((error) => {
+        console.error('クレームの取得に失敗しました:', error);
+    });
