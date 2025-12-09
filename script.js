@@ -422,7 +422,7 @@ function checkAdminStatus() {
 
         confirmCreateBtn.addEventListener('click', () => {
        const title = novelTitleInput.value.trim();
-            const targetLines = parseInt(targetLinesInput.value) || 100;
+        const targetLines = parseInt(targetLinesInput.value) || 100;
         
         if (!title) {
             alert('タイトルを入力してください');
@@ -434,9 +434,9 @@ function checkAdminStatus() {
             return;
         }
 
-                if (!auth.currentUser) {
-        showCreateNotice('作品を作成するには認証が必要です。', 'error');
-        return;
+        //         if (!auth.currentUser) {
+        // showCreateNotice('作品を作成するには認証が必要です。', 'error');
+        // return;
     }
         const novelRef = database.ref('novels').push();
     const novelId = novelRef.key;
