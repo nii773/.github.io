@@ -63,7 +63,6 @@
             background: white;
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             margin-bottom: 20px;
             max-height: 500px;
             overflow-y: auto;
@@ -189,7 +188,6 @@
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         .novel-header-top {
@@ -231,7 +229,6 @@
             border-radius: 15px;
             padding: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0.1, 0, 0.1, 0.2);
             max-height: 400px;
             overflow-y: auto;
         }
@@ -274,7 +271,6 @@
             background: white;
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0.1, 0, 0.1, 0.2);
         }
 
         #line-input {
@@ -331,7 +327,6 @@
 
         #submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
         #submit-btn:active {
