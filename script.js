@@ -6,17 +6,22 @@ const database = firebase.database();
         const createNotice = document.getElementById('create-notice');
         const createModal = document.getElementById('create-modal');
         const novelTitleInput = document.getElementById('novel-title-input');
+        const targetLinesInput = document.getElementById('target-lines-input');
         const cancelBtn = document.getElementById('cancel-btn');
         const confirmCreateBtn = document.getElementById('confirm-create-btn');
         const currentNovelTitle = document.getElementById('current-novel-title');
+        const currentNovelStatus = document.getElementById('current-novel-status');
         const currentNovelInfo = document.getElementById('current-novel-info');
+        const completionMessageContainer = document.getElementById('completion-message-container');
         const lineInput = document.getElementById('line-input');
         const submitBtn = document.getElementById('submit-btn');
         const charCount = document.getElementById('char-count');
+        const remainingLines = document.getElementById('remaining-lines');
         const novelLines = document.getElementById('novel-lines');
         const notice = document.getElementById('notice');
 
         let currentNovelId = null;
+        let currentNovelData = null;
         const LAST_CREATE_KEY = 'lastCreateTime';
         const LAST_POST_KEY = 'lastPostTime';
 
@@ -57,13 +62,22 @@ const database = firebase.database();
                     const createdDate = new Date(novel.createdAt);
                     const dateStr = `${createdDate.getFullYear()}/${createdDate.getMonth() + 1}/${createdDate.getDate()}`;
                     
+                    const currentLines = novel.currentLines || 0;
+                    const targetLines = novel.targetLines || 100;
+                    const isCompleted = currentLines >= targetLines;
+                    const statusText = isCompleted ? '完成' : '製作中';
+                    const statusClass = isCompleted ? 'completed' : 'in-progress';
+                    
                     novelItem.innerHTML = `
-                        <div class="novel-title">${novel.title}</div>
-                        <div class="novel-meta">${dateStr} 作成</div>
+                        <div class="novel-title-row">
+                            <div class="novel-title">${novel.title}</div>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </div>
+                        <div class="novel-meta">${dateStr} 作成 (${currentLines}/${targetLines}行)</div>
                     `;
                     
                     novelItem.addEventListener('click', () => {
-                        selectNovel(novel.id, novel.title);
+                        selectNovel(novel.id, novel);
                     });
                     
                     novelsListContainer.appendChild(novelItem);
@@ -72,9 +86,23 @@ const database = firebase.database();
         }
 
         // 作品を選択
-        function selectNovel(novelId, novelTitle) {
+        function selectNovel(novelId, novelData) {
             currentNovelId = novelId;
-            currentNovelTitle.textContent = novelTitle;
+            currentNovelData = novelData;
+            currentNovelTitle.textContent = novelData.title;
+            
+            // ステータス表示
+            const currentLines = novelData.currentLines || 0;
+            const targetLines = novelData.targetLines || 100;
+            const isCompleted = currentLines >= targetLines;
+            
+            if (isCompleted) {
+                currentNovelStatus.innerHTML = '<span class="novel-status-large completed">完成</span>';
+                completionMessageContainer.innerHTML = '<div class="completion-message">🎉 この作品は完成しました！ 🎉</div>';
+            } else {
+                currentNovelStatus.innerHTML = '<span class="novel-status-large in-progress">製作中</span>';
+                completionMessageContainer.innerHTML = '';
+            }
             
             // アクティブ状態を更新
             document.querySelectorAll('.novel-item').forEach(item => {
@@ -82,9 +110,14 @@ const database = firebase.database();
             });
             event.target.closest('.novel-item').classList.add('active');
             
-            // 入力欄を有効化
-            lineInput.disabled = false;
-            submitBtn.disabled = false;
+            // 入力欄を有効化（完成していない場合のみ）
+            if (isCompleted) {
+                lineInput.disabled = true;
+                submitBtn.disabled = true;
+            } else {
+                lineInput.disabled = false;
+                submitBtn.disabled = false;
+            }
             
             loadLines();
             checkPostLimit();
@@ -99,6 +132,7 @@ const database = firebase.database();
                 
                 if (!snapshot.exists()) {
                     novelLines.innerHTML = '<div class="loading">まだ物語は始まっていません。<br>あなたが最初の1行を書きませんか？</div>';
+                    updateNovelInfo(0);
                     return;
                 }
                 
@@ -114,16 +148,31 @@ const database = firebase.database();
                     novelLines.appendChild(lineDiv);
                 });
                 
-                // 行数を更新
-                database.ref(`novels/${currentNovelId}`).once('value', (snap) => {
-                    if (snap.exists()) {
-                        const novel = snap.val();
-                        currentNovelInfo.textContent = `全${lines.length}行`;
-                    }
-                });
-                
+                updateNovelInfo(lines.length);
                 novelLines.scrollTop = novelLines.scrollHeight;
             });
+        }
+
+        // 作品情報を更新
+        function updateNovelInfo(currentLineCount) {
+            const targetLines = currentNovelData.targetLines || 100;
+            const remaining = Math.max(0, targetLines - currentLineCount);
+            const isCompleted = currentLineCount >= targetLines;
+            
+            currentNovelInfo.textContent = `全${currentLineCount}行 / 目標${targetLines}行`;
+            
+            if (isCompleted) {
+                remainingLines.textContent = '完成！';
+                remainingLines.style.color = '#155724';
+                lineInput.disabled = true;
+                submitBtn.disabled = true;
+            } else {
+                remainingLines.textContent = `あと${remaining}行で完成`;
+                remainingLines.style.color = '#667eea';
+            }
+            
+            // Firebaseの現在行数を更新
+            database.ref(`novels/${currentNovelId}/currentLines`).set(currentLineCount);
         }
 
         // 新規作成可能かチェック（一週間に一回）
@@ -203,6 +252,7 @@ const database = firebase.database();
             }
             createModal.classList.add('show');
             novelTitleInput.value = '';
+            targetLinesInput.value = '100';
             novelTitleInput.focus();
         });
 
@@ -220,15 +270,23 @@ const database = firebase.database();
         // 新規作品作成
         confirmCreateBtn.addEventListener('click', () => {
             const title = novelTitleInput.value.trim();
+            const targetLines = parseInt(targetLinesInput.value) || 100;
             
             if (!title) {
                 alert('タイトルを入力してください');
                 return;
             }
             
+            if (targetLines < 10 || targetLines > 1000) {
+                alert('完成までの行数は10〜1000行の範囲で指定してください');
+                return;
+            }
+            
             const novelId = database.ref('novels').push().key;
             const novelData = {
                 title: title,
+                targetLines: targetLines,
+                currentLines: 0,
                 createdAt: Date.now()
             };
             
@@ -237,7 +295,7 @@ const database = firebase.database();
                     localStorage.setItem(LAST_CREATE_KEY, Date.now().toString());
                     createModal.classList.remove('show');
                     showCreateNotice('作品を作成しました！', 'success');
-                    selectNovel(novelId, title);
+                    selectNovel(novelId, novelData);
                 })
                 .catch((error) => {
                     console.error('Error:', error);
