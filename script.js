@@ -489,10 +489,6 @@ function checkAdminStatus() {
         }
         
         submitBtn.disabled = true;
-
-                if (!auth.currentUser) {
-        showNotice('投稿にはログインが必要です。', 'error');
-        return;
     }
         
         database.ref(`lines/${currentNovelId}`).push({
