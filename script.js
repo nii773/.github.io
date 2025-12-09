@@ -340,7 +340,8 @@ function checkAdminStatus() {
         const lastCreate = new Date(parseInt(lastCreateTime));
         const diffDays = Math.floor((now - lastCreate) / (1000 * 60 * 60 * 24));
         
-        return diffDays >= 7;
+        // return diffDays >= 7;
+                return true
     }
 
         function getTimeUntilNextCreate() {
@@ -369,7 +370,8 @@ function checkAdminStatus() {
         const now = new Date();
         const lastPost = new Date(parseInt(lastPostTime));
         
-        return now.toDateString() !== lastPost.toDateString();
+        // return now.toDateString() !== lastPost.toDateString();
+                return true
     }
 
     function getTimeUntilNextPost() {
