@@ -87,12 +87,13 @@ function checkAdminStatus() {
         adminBtn.addEventListener('click', () => {
             if (isAdmin) {
                 // ログアウト
-                isAdmin = false;
-                sessionStorage.removeItem(ADMIN_SESSION_KEY);
-                adminBtn.textContent = '管理者ログイン';
-                adminBtn.classList.remove('logged-in');
-                loadNovelsList();
-                alert('ログアウトしました');
+                auth.signOut()
+                    .then(() => {
+                        alert('ログアウトしました');
+                    })
+                    .catch((error) => {
+                         console.error('ログアウトエラー:', error);
+                    });
             } else {
                 // ログインモーダルを表示
                 adminModal.classList.add('show');
