@@ -340,8 +340,7 @@ function checkAdminStatus() {
         const lastCreate = new Date(parseInt(lastCreateTime));
         const diffDays = Math.floor((now - lastCreate) / (1000 * 60 * 60 * 24));
         
-        // return diffDays >= 7;
-                return true;
+        return diffDays >= 7;
     }
 
         function getTimeUntilNextCreate() {
@@ -370,8 +369,7 @@ function checkAdminStatus() {
         const now = new Date();
         const lastPost = new Date(parseInt(lastPostTime));
         
-        // return now.toDateString() !== lastPost.toDateString();
-                return true;
+        return now.toDateString() !== lastPost.toDateString();
     }
 
     function getTimeUntilNextPost() {
@@ -399,11 +397,11 @@ function checkAdminStatus() {
     }
 
         createNovelBtn.addEventListener('click', () => {
-        // if (!canCreateNovel()) {
-        //     const timeLeft = getTimeUntilNextCreate();
-        //     showCreateNotice(`次の作品は ${timeLeft} 後に作成できます`, 'info');
-        //     return;
-        // }
+        if (!canCreateNovel()) {
+            const timeLeft = getTimeUntilNextCreate();
+            showCreateNotice(`次の作品は ${timeLeft} 後に作成できます`, 'info');
+            return;
+        }
         createModal.classList.add('show');
         novelTitleInput.value = '';
         targetLinesInput.value = '100';
@@ -482,11 +480,11 @@ function checkAdminStatus() {
         return;
     }
         
-        // if (!canPost()) {
-        //     const timeLeft = getTimeUntilNextPost();
-        //     showNotice(`次の投稿まで ${timeLeft} お待ちください`, 'info');
-        //     return;
-        // }
+        if (!canPost()) {
+            const timeLeft = getTimeUntilNextPost();
+            showNotice(`次の投稿まで ${timeLeft} お待ちください`, 'info');
+            return;
+        }
         
         submitBtn.disabled = true;
 
