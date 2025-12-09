@@ -466,20 +466,40 @@ function checkAdminStatus() {
 });
         submitBtn.addEventListener('click', () => {
         if (!currentNovelId) {
-            showNotice('作品を選択してください', 'error');
-            return;
-        }
-        
-        const text = lineInput.value.trim();
-        
-        if (!text) {
-            showNotice('1行を入力してください', 'error');
-            return;
-        }
+        showNotice('作品を選択してください', 'error');
+        return;
+    }
+    
+    const text = lineInput.value.trim();
+    
+    if (!text) {
+        showNotice('1行を入力してください', 'error');
+        return;
+    }
 
-        if (text.length > 100) {
+    if (text.length > 100) {
         showNotice('投稿は100文字以内です。', 'error');
         return;
+    }
+    
+    submitBtn.disabled = true;
+    
+    database.ref(`lines/${currentNovelId}`).push({
+        text: text,
+        timestamp: Date.now(),
+        userId: auth.currentUser.uid
+    })
+    .then(() => {
+        lineInput.value = '';
+        charCount.textContent = '0/100';
+        showNotice('投稿しました！', 'success'); 
+        submitBtn.disabled = false;
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        showNotice('投稿に失敗しました。もう一度お試しください。', 'error');
+        submitBtn.disabled = false;
+    });
     }
         
         // if (!canPost()) {
