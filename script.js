@@ -95,6 +95,7 @@ function checkAdminStatus() {
     auth.signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
             const user = userCredential.user;
+                
             user.getIdTokenResult(true) 
                 .then((idTokenResult) => {
                     if (idTokenResult.claims.admin === true) { 
@@ -436,22 +437,28 @@ function checkAdminStatus() {
         showCreateNotice('作品を作成するには認証が必要です。', 'error');
         return;
     }
-        
+        const novelRef = database.ref('novels').push();
         const novelId = database.ref('novels').push().key;
+                
         const novelData = {
             title: title,
             targetLines: targetLines,
             currentLines: 0,
-            createdAt: Date.now(),
+            createdAt: firebase.database.ServerValue.TIMESTAMP, 
             userId: auth.currentUser.uid
         };
         
-        database.ref(database.ref('novels').push({
-        title: title,
-        createdAt: firebase.database.ServerValue.TIMESTAMP,
-        targetLines: targetLines,
-        currentLines: 0,
-        userId: auth.currentUser.uid
+        novelRef.set(novelData)
+            .then(() => {
+                localStorage.setItem(LAST_CREATE_KEY, Date.now().toString());
+                createModal.classList.remove('show');
+                showCreateNotice('作品を作成しました！', 'success');
+                selectNovel(novelId, novelData); 
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('作成に失敗しました');
+            });
     }))
             .then(() => {
                 localStorage.setItem(LAST_CREATE_KEY, Date.now().toString());
