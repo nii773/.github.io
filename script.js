@@ -463,18 +463,6 @@ function checkAdminStatus() {
             alert('作成に失敗しました');
         });
 });
-            .then(() => {
-                localStorage.setItem(LAST_CREATE_KEY, Date.now().toString());
-                createModal.classList.remove('show');
-                showCreateNotice('作品を作成しました！', 'success');
-                selectNovel(novelId, novelData);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('作成に失敗しました');
-            });
-    });
-
         submitBtn.addEventListener('click', () => {
         if (!currentNovelId) {
             showNotice('作品を選択してください', 'error');
