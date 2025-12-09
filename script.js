@@ -270,6 +270,10 @@ function checkAdminStatus() {
             
             document.querySelectorAll('.novel-item').forEach(item => {
                 item.classList.remove('active');
+
+                    if (item.querySelector('.delete-btn')?.dataset.novelId === novelId) {
+            item.classList.add('active');
+        }
             });
             event.target.closest('.novel-item').classList.add('active');
             
