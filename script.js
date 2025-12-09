@@ -41,14 +41,47 @@ const auth = firebase.auth();
         const LAST_POST_KEY = 'lastPostTime';
 
         // 管理者状態の確認
-        function checkAdminStatus() {
-            const adminStatus = sessionStorage.getItem(ADMIN_SESSION_KEY);
-            if (adminStatus === 'true') {
-                isAdmin = true;
-                adminBtn.textContent = 'ログアウト';
-                adminBtn.classList.add('logged-in');
-            }
+        // script.js (変更後のコード)
+
+function checkAdminStatus() {
+    const auth = firebase.auth();
+
+    // 認証状態の変化を監視するリスナーを設定
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            // ユーザーがログインしている場合
+            
+            // カスタムクレームを確認
+            user.getIdTokenResult(false) // ページロード時はトークンリフレッシュは必須ではないため(false)でOK
+                .then((idTokenResult) => {
+                    if (idTokenResult.claims.admin === true) {
+                        // 管理者
+                        isAdmin = true;
+                        adminBtn.textContent = 'ログアウト';
+                        adminBtn.classList.add('logged-in');
+                    } else {
+                        // 一般ユーザー
+                        isAdmin = false;
+                        adminBtn.textContent = '管理者ログイン';
+                        adminBtn.classList.remove('logged-in');
+                        // 権限のないユーザーをログアウトさせることもできます: auth.signOut();
+                    }
+                    // 権限に応じて小説一覧を読み込み
+                    loadNovelsList();
+                });
+
+        } else {
+            // ユーザーがログアウトしている
+            isAdmin = false;
+            adminBtn.textContent = '管理者ログイン';
+            adminBtn.classList.remove('logged-in');
+            
+            // ログアウト状態でも小説一覧を読み込み
+            loadNovelsList();
         }
+    });
+}
+// この関数はファイルの最後で呼び出されているため、そのまま使用できます。
 
         // 管理者ログイン/ログアウト
         adminBtn.addEventListener('click', () => {
