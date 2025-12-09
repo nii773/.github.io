@@ -274,7 +274,7 @@
             background: white;
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0.1, 0, 0.1, 0.2);
         }
 
         #line-input {
