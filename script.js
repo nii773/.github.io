@@ -96,7 +96,7 @@ function checkAdminStatus() {
         .then((userCredential) => {
             const user = userCredential.user;
                 
-            user.getIdTokenResult(true) 
+            user.getIdTokenResult() 
                 .then((idTokenResult) => {
                     if (idTokenResult.claims.admin === true) { 
                         isAdmin = true;
@@ -210,6 +210,8 @@ function checkAdminStatus() {
 
         deleteConfirmBtn.addEventListener('click', () => {
             if (!novelToDelete) return;
+
+                const deletedId = novelToDelete;
             
             const updates = {};
             updates[`novels/${novelToDelete}`] = null;
@@ -268,14 +270,7 @@ function checkAdminStatus() {
                 completionMessageContainer.innerHTML = '';
             }
             
-            document.querySelectorAll('.novel-item').forEach(item => {
-                item.classList.remove('active');
-
-                    if (item.querySelector('.delete-btn')?.dataset.novelId === novelId) {
-            item.classList.add('active');
-        }
-            });
-            event.target.closest('.novel-item').classList.add('active');
+            loadNovelsList();
             
             if (isCompleted) {
                 lineInput.disabled = true;
@@ -442,24 +437,24 @@ function checkAdminStatus() {
         return;
     }
         const novelRef = database.ref('novels').push();
-    const novelId = novelRef.key; // 2. 取得した Reference からキーを取得する
+    const novelId = novelRef.key;
     
     const novelData = {
         title: title,
         targetLines: targetLines,
         currentLines: 0,
-        // 3. サーバータイムスタンプを正確に使用する
+
         createdAt: firebase.database.ServerValue.TIMESTAMP, 
         userId: auth.currentUser.uid
     };
     
-    // 4. Reference に対して set() を実行する
+
     novelRef.set(novelData)
         .then(() => {
             localStorage.setItem(LAST_CREATE_KEY, Date.now().toString());
             createModal.classList.remove('show');
             showCreateNotice('作品を作成しました！', 'success');
-            // 5. 新しい novelId を使用して選択
+
             selectNovel(novelId, novelData); 
         })
         .catch((error) => {
@@ -542,7 +537,6 @@ auth.signInAnonymously().catch((error) => {
     console.error("Anonymous sign-in failed: ", error);
 });
         checkAdminStatus();
-    loadNovelsList();
 
     if (!canCreateNovel()) {
         const timeLeft = getTimeUntilNextCreate();
