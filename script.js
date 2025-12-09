@@ -1,7 +1,6 @@
         const database = firebase.database();
 
-        // 管理者パスワード（実際の使用時は変更してください）
-        const ADMIN_PASSWORD = "relay2025admin";
+        const ADMIN_PASSWORD = "GHieob350Dgev";
         const ADMIN_SESSION_KEY = "adminLoggedIn";
 
         // DOM要素
