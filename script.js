@@ -4,7 +4,8 @@ const auth = firebase.auth();
         // DOM要素
         const adminBtn = document.getElementById('admin-btn');
         const adminModal = document.getElementById('admin-modal');
-        const adminPasswordInput = document.getElementById('admin-password-input');
+        const adminEmailInput = document.getElementById('admin-email-input');
+const adminPasswordInput = document.getElementById('admin-password-input');
         const adminCancelBtn = document.getElementById('admin-cancel-btn');
         const adminLoginBtn = document.getElementById('admin-login-btn');
         const deleteModal = document.getElementById('delete-modal');
@@ -102,11 +103,16 @@ function checkAdminStatus() {
         // 管理者ログイン処理
         adminLoginBtn.addEventListener('click', () => {
     // 実際に管理者として設定したメールアドレスと入力されたパスワードを使用
-    const adminEmail = 'takmasumizu@gmail.com';
+   const email = adminEmailInput.value;
     const password = adminPasswordInput.value;
 
+                if (!email || !password) {
+        alert('メールアドレスとパスワードを入力してください');
+        return;
+    }
+
     // 1. Firebase Authでログイン
-    auth.signInWithEmailAndPassword(adminEmail, password)
+    auth.signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
             const user = userCredential.user;
             
