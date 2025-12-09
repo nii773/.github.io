@@ -437,7 +437,6 @@ function checkAdminStatus() {
         //         if (!auth.currentUser) {
         // showCreateNotice('作品を作成するには認証が必要です。', 'error');
         // return;
-    }
         const novelRef = database.ref('novels').push();
     const novelId = novelRef.key;
     
@@ -500,7 +499,6 @@ function checkAdminStatus() {
         showNotice('投稿に失敗しました。もう一度お試しください。', 'error');
         submitBtn.disabled = false;
     });
-    }
         
         // if (!canPost()) {
         //     const timeLeft = getTimeUntilNextPost();
