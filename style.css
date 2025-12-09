@@ -54,7 +54,6 @@
             border-color: rgba(76, 175, 80, 0.7);
         }
 
-        /* 左サイドバー */
         .sidebar {
             width: 280px;
             flex-shrink: 0;
@@ -180,7 +179,6 @@
             transform: none;
         }
 
-        /* メインコンテンツ */
         .content {
             flex: 1;
             min-width: 0;
@@ -369,7 +367,6 @@
             color: #0c5460;
         }
 
-        /* モーダル */
         .modal {
             display: none;
             position: fixed;
