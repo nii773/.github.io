@@ -278,6 +278,7 @@ const firebaseConfig = {
         }
 
         // 小説の行を読み込む
+       // 小説の行を読み込む
         function loadLines() {
             if (!currentNovelId) return;
             
@@ -292,26 +293,20 @@ const firebaseConfig = {
                 
                 const lines = [];
                 snapshot.forEach((childSnapshot) => {
-                        <invoke name="artifacts">
-<parameter name="command">update</parameter>
-<parameter name="id">relay_novel_multiwork</parameter>
-<parameter name="old_str">                const lines = [];
-                snapshot.forEach((childSnapshot) => {</parameter>
-<parameter name="new_str">                const lines = [];
-                snapshot.forEach((childSnapshot) => {
                     lines.push(childSnapshot.val());
                 });
-                    lines.forEach((line) => {
-                const lineDiv = document.createElement('div');
-                lineDiv.className = 'line';
-                lineDiv.textContent = line.text;
-                novelLines.appendChild(lineDiv);
+
+                lines.forEach((line) => {
+                    const lineDiv = document.createElement('div');
+                    lineDiv.className = 'line';
+                    lineDiv.textContent = line.text;
+                    novelLines.appendChild(lineDiv);
+                });
+                
+                updateNovelInfo(lines.length);
+                novelLines.scrollTop = novelLines.scrollHeight;
             });
-            
-            updateNovelInfo(lines.length);
-            novelLines.scrollTop = novelLines.scrollHeight;
-        });
-    }
+        }
 
 
         // 作品情報を更新
