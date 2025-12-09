@@ -1,9 +1,6 @@
         const database = firebase.database();
 const auth = firebase.auth();
 
-        const ADMIN_PASSWORD = "GHieob350Dgev";
-        const ADMIN_SESSION_KEY = "adminLoggedIn";
-
         // DOM要素
         const adminBtn = document.getElementById('admin-btn');
         const adminModal = document.getElementById('admin-modal');
