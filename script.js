@@ -96,7 +96,7 @@ function checkAdminStatus() {
         .then((userCredential) => {
             const user = userCredential.user;
                 
-            user.getIdTokenResult() 
+            user.getIdTokenResult(true) 
                 .then((idTokenResult) => {
                     if (idTokenResult.claims.admin === true) { 
                         isAdmin = true;
@@ -222,7 +222,7 @@ function checkAdminStatus() {
                     deleteModal.classList.remove('show');
                     novelToDelete = null;
                     
-                    if (currentNovelId === novelToDelete) {
+                    if (currentNovelId === deletedId) {
                         currentNovelId = null;
                         currentNovelData = null;
                         currentNovelTitle.textContent = '作品を選択してください';
