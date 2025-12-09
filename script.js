@@ -38,9 +38,6 @@ const adminPasswordInput = document.getElementById('admin-password-input');
         const LAST_CREATE_KEY = 'lastCreateTime';
         const LAST_POST_KEY = 'lastPostTime';
 
-        // 管理者状態の確認
-        // script.js (変更後のコード)
-
 function checkAdminStatus() {
     const auth = firebase.auth();
 
@@ -79,7 +76,6 @@ function checkAdminStatus() {
         }
     });
 }
-// この関数はファイルの最後で呼び出されているため、そのまま使用できます。
 
         // 管理者ログイン/ログアウト
         adminBtn.addEventListener('click', () => {
@@ -95,8 +91,9 @@ function checkAdminStatus() {
             } else {
                 // ログインモーダルを表示
                 adminModal.classList.add('show');
-                adminPasswordInput.value = '';
-                adminPasswordInput.focus();
+        adminEmailInput.value = ''; // メールアドレス入力欄をクリア
+        adminPasswordInput.value = '';
+        adminEmailInput.focus();
             }
         });
 
@@ -528,10 +525,16 @@ function checkAdminStatus() {
         }
         
         submitBtn.disabled = true;
+
+                if (!auth.currentUser) {
+        showNotice('投稿にはログインが必要です。', 'error');
+        return;
+    }
         
         database.ref(`lines/${currentNovelId}`).push({
             text: text,
             timestamp: Date.now()
+                userId: auth.currentUser.uid
         })
         .then(() => {
             localStorage.setItem(LAST_POST_KEY, Date.now().toString());
@@ -568,6 +571,10 @@ function checkAdminStatus() {
             createNotice.className = 'notice';
         }, 5000);
     }
+
+auth.signInAnonymously().catch((error) => {
+    console.error("Anonymous sign-in failed: ", error);
+});
         // 初期化
         checkAdminStatus();
     loadNovelsList();
