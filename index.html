@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-   <header>
+  <header>
         <h1>relay-novel</h1>
     </header>
 
@@ -27,9 +27,14 @@
         <!-- メインコンテンツ -->
         <main class="content">
             <div class="novel-header">
-                <h2 id="current-novel-title">作品を選択してください</h2>
+                <div class="novel-header-top">
+                    <h2 id="current-novel-title">作品を選択してください</h2>
+                    <div id="current-novel-status"></div>
+                </div>
                 <div class="novel-info" id="current-novel-info"></div>
             </div>
+
+            <div id="completion-message-container"></div>
 
             <div class="novel-container">
                 <div id="novel-lines" class="novel-lines">
@@ -45,7 +50,10 @@
                     disabled
                 ></textarea>
                 <div class="input-footer">
-                    <span id="char-count">0/100</span>
+                    <div class="input-footer-left">
+                        <span id="char-count">0/100</span>
+                        <span id="remaining-lines"></span>
+                    </div>
                     <button id="submit-btn" disabled>投稿する</button>
                 </div>
                 <p class="notice" id="notice"></p>
@@ -57,7 +65,14 @@
     <div id="create-modal" class="modal">
         <div class="modal-content">
             <h3>新しい作品を作る</h3>
-            <input type="text" id="novel-title-input" placeholder="作品のタイトル（最大30文字）" maxlength="30">
+            <div class="form-group">
+                <label for="novel-title-input">作品のタイトル</label>
+                <input type="text" id="novel-title-input" placeholder="最大30文字" maxlength="30">
+            </div>
+            <div class="form-group">
+                <label for="target-lines-input">完成までの行数</label>
+                <input type="number" id="target-lines-input" placeholder="例: 100" min="10" max="1000" value="100">
+            </div>
             <div class="modal-buttons">
                 <button class="btn-cancel" id="cancel-btn">キャンセル</button>
                 <button class="btn-create" id="confirm-create-btn">作成</button>
